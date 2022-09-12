@@ -1701,9 +1701,17 @@ class VBA_Project(object):
         if self.syskind not in SYSKIND_NAME:
             log.error("invalid PROJECTSYSKIND_SysKind {0:04X}".format(self.syskind))
 
+        # Temporary fix for unexpected parameter block 0x004A
+        id_temp = struct.unpack("<H", dir_stream.read(2))[0]
+        if id_temp == 0x004A:
+            size_temp = struct.unpack("<L", dir_stream.read(4))[0]
+            value_temp = struct.unpack("<L", dir_stream.read(size_temp))[0]
+            id_temp = struct.unpack("<H", dir_stream.read(2))[0]
+
         # PROJECTLCID Record
         # Specifies the VBA project's LCID.
-        projectlcid_id = struct.unpack("<H", dir_stream.read(2))[0]
+        projectlcid_id = id_temp
+        # projectlcid_id = struct.unpack("<H", dir_stream.read(2))[0]
         self.check_value('PROJECTLCID_Id', 0x0002, projectlcid_id)
         projectlcid_size = struct.unpack("<L", dir_stream.read(4))[0]
         self.check_value('PROJECTLCID_Size', 0x0004, projectlcid_size)
