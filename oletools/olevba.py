@@ -3568,9 +3568,9 @@ class VBA_Parser(object):
                             # (for example code page 1252 or 1251), because it's in the
                             # VBA_Project class and if we're here it may be because
                             # the VBA project parsing failed (e.g. issue #593).
-                            # So let's convert using cp1252 as a guess
+                            # So let's convert using shift_jis as a guess
                             # TODO get the actual encoding from the VBA_Project
-                            vba_code_str = bytes2str(vba_code_bytes, encoding='cp1252')
+                            vba_code_str = bytes2str(vba_code_bytes, encoding='shift_jis')
                             yield (self.filename, d.name, d.name, vba_code_str)
                         except Exception as exc:
                             # display the exception with full stack trace for debugging
